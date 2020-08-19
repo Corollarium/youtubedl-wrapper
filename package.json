@@ -2,8 +2,15 @@
   "name": "youtubedl-wrapper",
   "version": "0.1.0",
   "description": "Youtube-dl wrapper for nodejs",
-  "repository": "https://github.com/Corollarium/youtubedl-wrapper",
-  "author": "Corollarium",
+  "homepage": "https://github.com/Corollarium/youtubedl-wrapper",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Corollarium/youtubedl-wrapper"
+  },
+  "author": {
+	  "name": "Corollarium",
+	  "url": "https://corollarium.com"
+	},
   "license": "MIT",
   "engines": {
     "node": ">= 10"
