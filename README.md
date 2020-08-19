@@ -2,6 +2,8 @@
 
 This is a NodeJS wrapper for [youtube-dl](http://rg3.github.com/youtube-dl/).
 
+There's an alternative package [node-youtube-dl](https://github.com/przemyslawpluta/node-youtube-dl/). The main differences is that youtubedl-wrapper uses promises/async and downloads video through youtube-dl itself.
+
 ## Quickstart
 
 Download video:
