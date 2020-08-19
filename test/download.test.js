@@ -1,14 +1,16 @@
+const path = require("path");
+const fsExtra = require("fs-extra");
 const youtubedl = require("../src/index");
 
 describe("Download", () => {
   beforeEach(() => {
-    //
+    fsExtra.emptyDirSync(path.join(__dirname, "data"));
   });
 
   test("download youtube", async () => {
     const y = new youtubedl.Youtubedl();
     const video = "https://www.youtube.com/watch?v=90AiXO1pAiA";
-    const download = await y.download(video, ["-f", "best"]);
+    const download = await y.download(video, path.join(__dirname, "data"), ["-f", "best"]);
     return expect(
       new Promise((resolve, reject) => {
         download.on("download", data => {
@@ -25,6 +27,7 @@ describe("Download", () => {
           if (!data.status) {
             reject();
           } else {
+            expect(data.filename).toMatch(/lol-90AiXO1pAiA.mp4$/);
             resolve(true);
           }
         });

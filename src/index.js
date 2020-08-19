@@ -8,47 +8,13 @@ const { promisify } = require("util");
 
 class YoutubedlEmitter extends EventEmitter {}
 
-function parseLine(line, yemit) {
-  if (line.indexOf("[download]") >= 0) {
-    const regex = /\[download\]\s+(?<progress>[0-9\.]+)%\s+of\s+(?<downloaded>[0-9\.]+)(?<downloadedUnit>[a-zA-Z]+)\s+at\s+(?<speed>[0-9\.%]+)(?<speedUnit>[a-zA-Z\/]+)\s+ETA\s+(?<ETA>[0-9:]+)/;
-    const match = regex.exec(line);
-    if (match) {
-      yemit.emit("download", { ...match.groups });
-    }
-  } else if (line.indexOf("[ffmpeg]") >= 0) {
-    const progress = 0; // TODO
-    yemit.emit("convert", { progress });
-  }
-}
-
+/**
+ * The Youtubedl class
+ * @param {string} binary The youtube-dl executable path. Defaults to {this package}/bin/youtube-dl
+ */
 class Youtubedl {
   constructor(binary = null) {
     this.binary = binary || `${__dirname}/../bin/youtube-dl`;
-  }
-
-  run(url, args = []) {
-    const yemit = new YoutubedlEmitter();
-
-    args.unshift("--newline");
-    if (url) {
-      args.unshift(url);
-    }
-    const y = spawn(this.binary, args);
-
-    const rl = readline.createInterface({ input: y.stdout });
-    rl.on("line", function stdout(line) {
-      parseLine(line, yemit);
-    });
-
-    y.stderr.on("data", function stderr(data) {
-      console.log(`stderr: ${data.toString()}`);
-    });
-
-    y.on("close", code => {
-      console.log(`child process exited with code ${code.toString()}`);
-      yemit.emit("end", { code, status: code === 0 });
-    });
-    return yemit;
   }
 
   /**
@@ -69,12 +35,72 @@ class Youtubedl {
     return this.binary;
   }
 
-  async download(url, args = []) {
-    return this.run(url, args);
+  /**
+   * Downloads a video
+   *
+   * @param {string} url
+   * @param {string} directory
+   * @param {Array} args Extra arguments for youtube-dl
+   * @returns {Emitter} An Emitter object. Emits:
+   * - "download", {progress, speed, speedUnit, downloaded, downloadedUnit, ETA}
+   * - "convert", {}
+   * - "end" { status, code}
+   */
+  async download(url, directory, args = []) {
+    const yemit = new YoutubedlEmitter();
+    let filename = "";
+
+    args.unshift("--newline");
+    if (directory) {
+      // TODO: check -o in args
+      args.push("-o");
+      args.push(`${directory}/%(title)s-%(id)s.%(ext)s`);
+    }
+
+    if (url) {
+      args.unshift(url);
+    }
+    const y = spawn(this.binary, args);
+
+    function parseLine(line) {
+      if (line.indexOf("[download]") >= 0) {
+        const regex = /\[download\]\s+(?<progress>[0-9\.]+)%\s+of\s+(?<downloaded>[0-9\.]+)(?<downloadedUnit>[a-zA-Z]+)\s+at\s+(?<speed>[0-9\.%]+)(?<speedUnit>[a-zA-Z\/]+)\s+ETA\s+(?<ETA>[0-9:]+)/;
+        const match = regex.exec(line);
+        if (match) {
+          yemit.emit("download", { ...match.groups });
+        } else {
+          console.log(line);
+          const f = /\[download\]\s+Destination:\s+(?<filename>.*)/.exec(line);
+          if (f) {
+            filename = f.groups.filename;
+          }
+        }
+      } else if (line.indexOf("[ffmpeg]") >= 0) {
+        const progress = 0; // TODO
+        yemit.emit("convert", { progress });
+      }
+    }
+
+    const rl = readline.createInterface({ input: y.stdout });
+    rl.on("line", function stdout(line) {
+
+      parseLine(line);
+    });
+
+    y.stderr.on("data", function stderr(data) {
+      // ?
+    });
+
+    y.on("close", code => {
+      yemit.emit("end", { code, status: code === 0, filename });
+    });
+    return yemit;
   }
 
   /**
-   * @returns {Promise}
+   * Returns the current youtube-dl executable version
+   *
+   * @returns {Promise<string>} promise with the version
    */
   async getVersion() {
     return new Promise((resolve, reject) => {
@@ -118,9 +144,8 @@ class Youtubedl {
     });
   }
 
-  async getSubs(url, options) {
-    const args = options;
-    return this.run(url, args);
+  async subtitles(url) {
+    // TODO
   }
 
   /**

@@ -1,9 +1,9 @@
 const fs = require("fs");
 const path = require("path");
-const fsExtra = require('fs-extra');
+const fsExtra = require("fs-extra");
 const youtubedl = require("../src/index");
 
-describe("Download", () => {
+describe("Thumbnail", () => {
   beforeEach(() => {
     fsExtra.emptyDirSync(path.join(__dirname, "data"));
   });
