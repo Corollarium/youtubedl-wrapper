@@ -1,6 +1,10 @@
+const fs = require("fs");
 const { spawn } = require("child_process");
 const readline = require("readline");
 const EventEmitter = require("events");
+const got = require("got");
+const stream = require("stream");
+const { promisify } = require("util");
 
 class YoutubedlEmitter extends EventEmitter {}
 
@@ -90,13 +94,28 @@ class Youtubedl {
   }
 
   /**
+   * Gets video info
    *
    * @param {string} url
    * @param {*} options
    */
-  async getInfo(url, options) {
-    const args = options;
-    return this.run(url, args);
+  async info(url) {
+    return new Promise((resolve, reject) => {
+      const y = spawn(this.binary, [url, "--dump-json"]);
+      const json = [];
+
+      y.stdout.on("data", function stdout(data) {
+        json.push(data.toString());
+      });
+
+      y.on("exit", code => {
+        if (code) {
+          reject(code);
+          return;
+        }
+        resolve(JSON.parse(json.join("")));
+      });
+    });
   }
 
   async getSubs(url, options) {
@@ -104,9 +123,34 @@ class Youtubedl {
     return this.run(url, args);
   }
 
-  async getThumbs(url, options) {
-    const args = options;
-    return this.run(url, args);
+  /**
+   * Fetches a video thumbnail
+   *
+   * @param {string} url The video url
+   * @param {string} filename The local filename to save the thumbnail
+   */
+  async thumbnail(url, filename) {
+    let thumbnailURL = null;
+    return new Promise((resolve, reject) => {
+      const y = spawn(this.binary, [url, "--get-thumbnail"]);
+
+      const rl = readline.createInterface({ input: y.stdout });
+      rl.on("line", function stdout(line) {
+        thumbnailURL = line;
+      });
+
+      y.on("exit", code => {
+        if (code) {
+          reject(code);
+          return;
+        }
+        const pipeline = promisify(stream.pipeline);
+        pipeline(
+          got.stream(thumbnailURL),
+          fs.createWriteStream(filename, { mode: 493 })
+        ).then(resolve);
+      });
+    });
   }
 
   /**
