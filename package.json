@@ -7,6 +7,9 @@
     "type": "git",
     "url": "https://github.com/Corollarium/youtubedl-wrapper"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/corollarium"
+  },
   "author": {
 	  "name": "Corollarium",
 	  "url": "https://corollarium.com"
