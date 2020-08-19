@@ -3,3 +3,6 @@ coverage
 dist
 node_modules
 *.log
+bin/youtube-dl
+*.mp4
+*.mkv
