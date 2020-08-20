@@ -6,7 +6,7 @@ const got = require("got");
 const stream = require("stream");
 const { promisify } = require("util");
 
-class YoutubedlEmitter extends EventEmitter { }
+class YoutubedlEmitter extends EventEmitter {}
 
 /**
  * The Youtubedl class
@@ -64,14 +64,15 @@ class Youtubedl {
 
     function parseLine(line) {
       if (line.indexOf("[download]") >= 0) {
-        const regex = /\[download\]\s+(?<progress>[0-9.]+)%\s+of\s+~?(?<downloaded>[0-9.]+)(?<downloadedUnit>[a-zA-Z]+)\s+at\s+(?<speed>[0-9\.%]+)(?<speedUnit>[a-zA-Z\/]+)\s+ETA\s+(?<ETA>[0-9:]+)/;
+        const regex = /\[download\]\s+(?<progress>[0-9.]+)%\s+of\s+~?(?<downloaded>[0-9.]+)(?<downloadedUnit>[a-zA-Z]+)\s+at\s+(?<speed>[0-9.%]+)(?<speedUnit>[a-zA-Z/]+)\s+ETA\s+(?<ETA>[0-9:]+)/;
         const match = regex.exec(line);
         if (match) {
           yemit.emit("download", { ...match.groups });
         } else {
-          console.log(line);
+          // console.log(line);
           const f = /\[download\]\s+Destination:\s+(?<filename>.*)/.exec(line);
           if (f) {
+            // eslint-disable-next-line prefer-destructuring
             filename = f.groups.filename;
           }
         }
@@ -83,16 +84,21 @@ class Youtubedl {
 
     const rl = readline.createInterface({ input: y.stdout });
     rl.on("line", function stdout(line) {
-
       parseLine(line);
     });
 
+    const errOutput = [];
     y.stderr.on("data", function stderr(data) {
-      // ?
+      errOutput.push(data);
     });
 
     y.on("close", code => {
-      yemit.emit("end", { code, status: code === 0, filename });
+      yemit.emit("end", {
+        code,
+        status: code === 0,
+        filename,
+        stderr: errOutput.join("")
+      });
     });
     return yemit;
   }
@@ -144,9 +150,9 @@ class Youtubedl {
     });
   }
 
-  async subtitles(url) {
-    // TODO
-  }
+  // async subtitles(url) {
+  //   // TODO
+  // }
 
   /**
    * Fetches a video thumbnail

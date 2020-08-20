@@ -10,7 +10,10 @@ describe("Download", () => {
   test("download youtube", async () => {
     const y = new youtubedl.Youtubedl();
     const video = "https://www.youtube.com/watch?v=90AiXO1pAiA";
-    const download = await y.download(video, path.join(__dirname, "data"), ["-f", "best"]);
+    const download = await y.download(video, path.join(__dirname, "data"), [
+      "-f",
+      "best"
+    ]);
     return expect(
       new Promise((resolve, reject) => {
         download.on("download", data => {
@@ -38,7 +41,10 @@ describe("Download", () => {
   test("download vimeo", async () => {
     const y = new youtubedl.Youtubedl();
     const video = "https://vimeo.com/56282283";
-    const download = await y.download(video, path.join(__dirname, "data"), ["-f", "best"]);
+    const download = await y.download(video, path.join(__dirname, "data"), [
+      "-f",
+      "best"
+    ]);
     return expect(
       new Promise((resolve, reject) => {
         download.on("download", data => {
