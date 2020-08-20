@@ -21,14 +21,15 @@
   ],
   "scripts": {
     "test": "jest",
-    "coverage": "yarn test -- --coverage",
+    "coverage": "$npm_execpath test -- --coverage",
     "download": "node scripts/download.js ./bin/youtube-dl",
     "postcoverage": "open-cli coverage/lcov-report/index.html",
     "lint": "eslint .",
+    "ci": "$npm_execpath download",
     "docs": "documentation readme src --section=API",
     "postdocs": "git add README.md",
-    "prebuild": "yarn run docs",
-    "prerelease": "yarn run lint && yarn test",
+    "prebuild": "$npm_execpath run docs",
+    "prerelease": "$npm_execpath run lint && $npm_execpath test",
     "release": "standard-version",
     "postpublish": "git push origin master --follow-tags"
   },
