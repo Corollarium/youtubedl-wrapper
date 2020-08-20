@@ -13,9 +13,11 @@ const youtubedl = require("./index");
 //   filePath = path.join(dir, exec("youtube-dl"));
 // }
 
-async function downloader(basePath, isOverwrite = false) {
+async function downloader(basePath, isOverwrite = false, platform = "linux") {
   let filePath = basePath;
   let currentVersion = "xxx";
+
+  const executable = `youtube-dl${platform === "windows" ? ".exe" : ""}`;
 
   // handle overwriting
   let exists = fs.existsSync(filePath);
@@ -25,7 +27,7 @@ async function downloader(basePath, isOverwrite = false) {
 
     // diretory
     if (lstat.isDirectory()) {
-      filePath = path.join(filePath, "youtube-dl");
+      filePath = path.join(filePath, executable);
       lstat = fs.lstatSync(filePath);
       exists = fs.existsSync(filePath);
     }
@@ -40,11 +42,10 @@ async function downloader(basePath, isOverwrite = false) {
     currentVersion = await y.getVersion();
   }
 
-  // TODO const exec = path => (isWin ? `${path}.exe` : path);
-
   const url =
-    process.env.YOUTUBE_DL_DOWNLOAD_HOST ||
-    "https://yt-dl.org/downloads/latest/youtube-dl";
+    (process.env.YOUTUBE_DL_DOWNLOAD_HOST ||
+      "https://yt-dl.org/downloads/latest/youtube-dl") +
+    (platform === "windows" ? ".exe" : "");
 
   const res = await got.get(url, { followRedirect: false });
   if (res.statusCode !== 302) {
