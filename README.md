@@ -1,5 +1,7 @@
 # youtubedl-wrapper
 
+[![Build Status](https://travis-ci.org/Corollarium/youtubedl-wrapper.svg?branch=master)](https://travis-ci.org/przemyslawpluta/node-youtube-dl)
+
 This is a NodeJS wrapper for [youtube-dl](http://rg3.github.com/youtube-dl/).
 
 There's an alternative package [node-youtube-dl](https://github.com/przemyslawpluta/node-youtube-dl/). The main differences is that youtubedl-wrapper uses promises/async and downloads video through youtube-dl itself.
@@ -14,12 +16,14 @@ const video = "https://www.youtube.com/watch?v=90AiXO1pAiA";
 const download = await y.download(video, "mydirectory", ["-f", "best"]);
 
 download.on("download", data => {
-  console.log(`${data.progress}% downloaded, ETA ${data.ETA}, speed ${data.speed}${data.speedUnit}, downloaded bytes ${data.downloaded}${data.downloadedUnit}`);
+  console.log(
+    `${data.progress}% downloaded, ETA ${data.ETA}, speed ${data.speed}${data.speedUnit}, downloaded bytes ${data.downloaded}${data.downloadedUnit}`
+  );
 });
 
 download.on("end", data => {
   if (!data.status) {
-    console.log("Download failed")
+    console.log("Download failed");
   } else {
     console.log("Data downloaded to: " + data.filename);
   }
@@ -46,19 +50,19 @@ const data = await y.thumbnail(video, path.join(__dirname, "thumbnail.jpg"));
 
 #### Table of Contents
 
--   [Youtubedl](#youtubedl)
-    -   [Parameters](#parameters)
-    -   [setBinary](#setbinary)
-        -   [Parameters](#parameters-1)
-    -   [getBinary](#getbinary)
-    -   [download](#download)
-        -   [Parameters](#parameters-2)
-    -   [getVersion](#getversion)
-    -   [info](#info)
-        -   [Parameters](#parameters-3)
-    -   [thumbnail](#thumbnail)
-        -   [Parameters](#parameters-4)
-    -   [getExtractors](#getextractors)
+- [Youtubedl](#youtubedl)
+  - [Parameters](#parameters)
+  - [setBinary](#setbinary)
+    - [Parameters](#parameters-1)
+  - [getBinary](#getbinary)
+  - [download](#download)
+    - [Parameters](#parameters-2)
+  - [getVersion](#getversion)
+  - [info](#info)
+    - [Parameters](#parameters-3)
+  - [thumbnail](#thumbnail)
+    - [Parameters](#parameters-4)
+  - [getExtractors](#getextractors)
 
 ### Youtubedl
 
@@ -66,7 +70,7 @@ The Youtubedl class
 
 #### Parameters
 
--   `binary` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The youtube-dl executable path. Defaults to {this package}/bin/youtube-dl (optional, default `null`)
+- `binary` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The youtube-dl executable path. Defaults to {this package}/bin/youtube-dl (optional, default `null`)
 
 #### setBinary
 
@@ -74,7 +78,7 @@ Set binary path for youtube-dl
 
 ##### Parameters
 
--   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The full binary file path
+- `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The full binary file path
 
 #### getBinary
 
@@ -88,13 +92,14 @@ Downloads a video
 
 ##### Parameters
 
--   `url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
--   `directory` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
--   `args` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** Extra arguments for youtube-dl (optional, default `[]`)
+- `url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**
+- `directory` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**
+- `args` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** Extra arguments for youtube-dl (optional, default `[]`)
 
-Returns **Emitter** An Emitter object. Emits:-   "download", {progress, speed, speedUnit, downloaded, downloadedUnit, ETA}
--   "convert", {}
--   "end" { status, code}
+Returns **Emitter** An Emitter object. Emits:- "download", {progress, speed, speedUnit, downloaded, downloadedUnit, ETA}
+
+- "convert", {}
+- "end" { status, code}
 
 #### getVersion
 
@@ -108,8 +113,8 @@ Gets video info
 
 ##### Parameters
 
--   `url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
--   `options` **any** 
+- `url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**
+- `options` **any**
 
 #### thumbnail
 
@@ -117,8 +122,8 @@ Fetches a video thumbnail
 
 ##### Parameters
 
--   `url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The video url
--   `filename` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The local filename to save the thumbnail
+- `url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The video url
+- `filename` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The local filename to save the thumbnail
 
 #### getExtractors
 
@@ -128,4 +133,4 @@ Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 ## License
 
-MIT 
+MIT
