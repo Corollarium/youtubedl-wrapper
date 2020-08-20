@@ -1,6 +1,6 @@
 # youtubedl-wrapper
 
-[![Build Status](https://travis-ci.org/Corollarium/youtubedl-wrapper.svg?branch=master)](https://travis-ci.org/przemyslawpluta/node-youtube-dl)
+[![Build Status](https://travis-ci.org/Corollarium/youtubedl-wrapper.svg?branch=master)](https://travis-ci.org/przemyslawpluta/node-youtube-dl)![NPM](https://img.shields.io/npm/l/@corollarium/youtubedl-wrapper)![node-current](https://img.shields.io/node/v/@corollarium/youtubedl-wrapper)![npm (scoped)](https://img.shields.io/npm/v/@corollarium/youtubedl-wrapper)
 
 This is a NodeJS wrapper for [youtube-dl](http://rg3.github.com/youtube-dl/).
 
