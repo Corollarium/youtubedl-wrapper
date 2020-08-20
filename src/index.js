@@ -64,7 +64,7 @@ class Youtubedl {
 
     function parseLine(line) {
       if (line.indexOf("[download]") >= 0) {
-        const regex = /\[download\]\s+(?<progress>[0-9\.]+)%\s+of\s+(?<downloaded>[0-9\.]+)(?<downloadedUnit>[a-zA-Z]+)\s+at\s+(?<speed>[0-9\.%]+)(?<speedUnit>[a-zA-Z\/]+)\s+ETA\s+(?<ETA>[0-9:]+)/;
+        const regex = /\[download\]\s+(?<progress>[0-9.]+)%\s+of\s+~?(?<downloaded>[0-9.]+)(?<downloadedUnit>[a-zA-Z]+)\s+at\s+(?<speed>[0-9\.%]+)(?<speedUnit>[a-zA-Z\/]+)\s+ETA\s+(?<ETA>[0-9:]+)/;
         const match = regex.exec(line);
         if (match) {
           yemit.emit("download", { ...match.groups });
