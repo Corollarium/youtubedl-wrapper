@@ -28,7 +28,7 @@ describe("Download", () => {
         });
         download.on("end", data => {
           if (!data.status) {
-            reject();
+            reject(data);
           } else {
             expect(data.filename).toMatch(/lol-90AiXO1pAiA.mp4$/);
             resolve(true);
@@ -59,7 +59,7 @@ describe("Download", () => {
         });
         download.on("end", data => {
           if (!data.status) {
-            reject();
+            reject(data);
           } else {
             expect(data.filename).toMatch(/Public Test Video-56282283.mp4$/);
             resolve(true);
