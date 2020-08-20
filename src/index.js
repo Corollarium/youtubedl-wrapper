@@ -6,7 +6,7 @@ const got = require("got");
 const stream = require("stream");
 const { promisify } = require("util");
 
-class YoutubedlEmitter extends EventEmitter {}
+class YoutubedlEmitter extends EventEmitter { }
 
 /**
  * The Youtubedl class
@@ -153,6 +153,7 @@ class Youtubedl {
    *
    * @param {string} url The video url
    * @param {string} filename The local filename to save the thumbnail
+   * @returns {Promise}
    */
   async thumbnail(url, filename) {
     let thumbnailURL = null;
