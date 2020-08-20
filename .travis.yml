@@ -4,6 +4,7 @@ node_js:
   - v12
 script:
   - yarn lint
+  - yarn download
   - yarn test --coverage
 cache:
   - yarn
