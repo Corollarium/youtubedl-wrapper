@@ -13,6 +13,15 @@ const youtubedl = require("./index");
 //   filePath = path.join(dir, exec("youtube-dl"));
 // }
 
+/**
+ * Downloads youtube-dl binary. If isOverwrite is true, the version is checked against the
+ * current one to avoid downloading it again.
+ *
+ * @param {string} basePath The path to download file to
+ * @param {boolean} isOverwrite If true overwrites an existing binary
+ * @param {string} platform "linux" or "windows"
+ * @returns {Promise<boolean>}
+ */
 async function downloader(basePath, isOverwrite = false, platform = "linux") {
   let filePath = basePath;
   let currentVersion = "xxx";

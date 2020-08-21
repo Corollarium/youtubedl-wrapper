@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const downloader = require("../src/downloader");
+const { downloader } = require("../src");
 
 (async () => {
   try {
