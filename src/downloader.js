@@ -37,8 +37,10 @@ async function downloader(basePath, isOverwrite = false, platform = "linux") {
     // diretory
     if (lstat.isDirectory()) {
       filePath = path.join(filePath, executable);
-      lstat = fs.lstatSync(filePath);
       exists = fs.existsSync(filePath);
+      if (exists) {
+        lstat = fs.lstatSync(filePath);
+      }
     }
   }
   if (exists) {
