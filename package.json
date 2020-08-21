@@ -1,6 +1,6 @@
 {
   "name": "@corollarium/youtubedl-wrapper",
-  "version": "0.1.4",
+  "version": "1.0.0",
   "description": "Youtube-dl wrapper for nodejs",
   "homepage": "https://github.com/Corollarium/youtubedl-wrapper",
   "repository": {
