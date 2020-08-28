@@ -1,6 +1,6 @@
 {
   "name": "@corollarium/youtubedl-wrapper",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Youtube-dl wrapper for nodejs",
   "homepage": "https://github.com/Corollarium/youtubedl-wrapper",
   "repository": {
@@ -27,8 +27,7 @@
     "postdocs": "git add README.md",
     "prebuild": "$npm_execpath run docs",
     "prerelease": "$npm_execpath run lint && $npm_execpath test",
-    "release": "standard-version",
-    "postpublish": "git push origin master --follow-tags"
+    "release": "standard-version"
   },
   "husky": {
     "hooks": {
