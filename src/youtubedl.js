@@ -175,10 +175,18 @@ class Youtubedl {
         thumbnailURL = line;
       });
 
+      const errOutput = [];
+      y.stderr.on("data", function stderr(data) {
+        errOutput.push(data);
+      });
+
       y.on("exit", code => {
         if (code) {
           reject(code);
           return;
+        }
+        if (!thumbnailURL) {
+          reject(errOutput.join());
         }
         const pipeline = promisify(stream.pipeline);
         pipeline(
