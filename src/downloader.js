@@ -49,8 +49,11 @@ async function downloader(basePath, isOverwrite = false, platform = "linux") {
     }
 
     // check version
-    const y = new youtubedl.Youtubedl(filePath);
-    currentVersion = await y.getVersion();
+    if (process.platform === "linux" && platform === "linux") {
+      const y = new youtubedl.Youtubedl(filePath);
+      currentVersion = await y.getVersion();
+    }
+    // TODO: windows
   }
 
   const url =
