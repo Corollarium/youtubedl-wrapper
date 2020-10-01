@@ -41,8 +41,8 @@ class Youtubedl {
   /**
    * Downloads a video
    *
-   * @param {string} url
-   * @param {string} directory
+   * @param {string} url The URL to download.
+   * @param {string} directory The directory to download. If you are passing a -o option to args, this is ignored.
    * @param {Array} args Extra arguments for youtube-dl
    * @returns {Emitter} An Emitter object. Emits:
    * - "download", {progress, speed, speedUnit, downloaded, downloadedUnit, ETA}
