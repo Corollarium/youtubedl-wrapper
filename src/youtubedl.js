@@ -57,8 +57,8 @@ class Youtubedl {
     if (directory) {
       // TODO: check -o in args
       let i;
-      for (i = 0; i < args.length; i++) {
-        if (args[i] == '-o') {
+      for (i = 0; i < args.length; i += 1) {
+        if (args[i] === "-o") {
           break;
         }
       }
