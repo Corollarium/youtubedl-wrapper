@@ -6,3 +6,5 @@ node_modules
 test/data/*
 *.mp4
 *.mkv
+youtube-dl
+youtube-dl.exe
