@@ -56,8 +56,16 @@ class Youtubedl {
     args.unshift("--newline");
     if (directory) {
       // TODO: check -o in args
-      args.push("-o");
-      args.push(`${directory}/%(title)s-%(id)s.%(ext)s`);
+      let i;
+      for (i = 0; i < args.length; i++) {
+        if (args[i] == '-o') {
+          break;
+        }
+      }
+      if (i === args.length) {
+        args.push("-o");
+        args.push(`${directory}/%(title)s-%(id)s.%(ext)s`);
+      }
     }
 
     if (url) {
