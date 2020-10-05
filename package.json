@@ -17,7 +17,7 @@
     "src"
   ],
   "scripts": {
-    "test": "jest",
+    "test": "jest --config=./test/jest.config.js",
     "coverage": "$npm_execpath test -- --coverage",
     "download": "node scripts/download.js ./bin/youtube-dl",
     "postcoverage": "open-cli coverage/lcov-report/index.html",
@@ -45,7 +45,8 @@
     "video"
   ],
   "dependencies": {
-    "got": "11.5.2"
+    "got": "11.5.2",
+    "which": "^2.0.2"
   },
   "devDependencies": {
     "documentation": "11.0.1",
