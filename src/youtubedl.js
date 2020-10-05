@@ -1,7 +1,7 @@
 const fs = require("fs");
 const { spawn } = require("child_process");
-const which = require('which')
 const readline = require("readline");
+const which = require("which");
 const EventEmitter = require("events");
 const got = require("got");
 const stream = require("stream");
