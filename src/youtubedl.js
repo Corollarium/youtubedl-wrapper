@@ -44,11 +44,11 @@ class Youtubedl {
    */
   static getPython() {
     if (process.platform === "linux") {
-      const p = which.sync("python");
+      const p = which.sync("python", { nothrow: true });
       if (p === "/usr/bin/python") {
         return null;
       }
-      const p3 = which.sync("python3");
+      const p3 = which.sync("python3", { nothrow: true });
       if (p3) {
         return p3;
       }
