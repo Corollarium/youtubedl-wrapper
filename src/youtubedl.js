@@ -1,5 +1,6 @@
 const fs = require("fs");
 const { spawn } = require("child_process");
+const which = require('which')
 const readline = require("readline");
 const EventEmitter = require("events");
 const got = require("got");
@@ -39,6 +40,31 @@ class Youtubedl {
   }
 
   /**
+   * Finds a workable python path if it's not the default
+   */
+  static getPython() {
+    if (process.platform === "linux") {
+      const p = which.sync("python");
+      if (p === "/usr/bin/python") {
+        return null;
+      }
+      const p3 = which.sync("python3");
+      if (p3) {
+        return p3;
+      }
+    }
+    return null;
+  }
+
+  spawn(args) {
+    const p = Youtubedl.getPython();
+    if (p) {
+      return spawn(p, [this.binary, ...args]);
+    }
+    return spawn(this.binary, args);
+  }
+
+  /**
    * Downloads a video
    *
    * @param {string} url The URL to download.
@@ -71,7 +97,7 @@ class Youtubedl {
     if (url) {
       args.unshift(url);
     }
-    const y = spawn(this.binary, args);
+    const y = this.spawn(args);
 
     function parseLine(line) {
       if (line.indexOf("[download]") >= 0) {
@@ -122,7 +148,7 @@ class Youtubedl {
    */
   async getVersion() {
     return new Promise((resolve, reject) => {
-      const y = spawn(this.binary, ["--version"]);
+      const y = this.spawn(["--version"]);
 
       y.stdout.on("data", function stdout(data) {
         const line = data.toString().trim();
@@ -145,7 +171,7 @@ class Youtubedl {
    */
   async info(url) {
     return new Promise((resolve, reject) => {
-      const y = spawn(this.binary, [url, "--dump-json"]);
+      const y = this.spawn([url, "--dump-json"]);
       const json = [];
 
       y.stdout.on("data", function stdout(data) {
@@ -176,7 +202,7 @@ class Youtubedl {
   async thumbnail(url, filename) {
     let thumbnailURL = null;
     return new Promise((resolve, reject) => {
-      const y = spawn(this.binary, [url, "--get-thumbnail"]);
+      const y = this.spawn([url, "--get-thumbnail"]);
 
       const rl = readline.createInterface({ input: y.stdout });
       rl.on("line", function stdout(line) {
@@ -213,7 +239,7 @@ class Youtubedl {
    */
   async getExtractors() {
     return new Promise((resolve, reject) => {
-      const y = spawn(this.binary, ["--list-extractors"]);
+      const y = this.spawn(["--list-extractors"]);
       const extractors = [];
 
       const rl = readline.createInterface({ input: y.stdout });
