@@ -221,6 +221,7 @@ class Youtubedl {
         }
         if (!thumbnailURL) {
           reject(errOutput.join());
+          return;
         }
         const pipeline = promisify(stream.pipeline);
         pipeline(
